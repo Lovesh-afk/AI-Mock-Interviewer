@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Mock Interviewer</title>
+</head>
+<body>
+    <h1>AI Mock Interviewer</h1>
+    <form method="POST">
+        <input type="text" name="role" placeholder="Enter job role (e.g. Python Backend Developer)" style="width:300px; padding:8px;">
+        <button type="submit">Generate Questions</button>
+    </form>
+
+    {% if questions %}
+        <h2>Interview Questions for: {{ role }}</h2>
+        <pre>{{ questions }}</pre>
+    {% endif %}
+</body>
+</html>
