@@ -1,21 +1,51 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Interview Results</title>
+    <title>Results - {{ role }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-    <h1>📊 Interview Complete — {{ role }}</h1>
-    <p>Here's your feedback for each question:</p>
-    <hr>
-    {% for item in feedbacks %}
-        <h3>Q{{ loop.index }}: {{ item.question }}</h3>
-        <p><strong>Your Answer:</strong> {{ item.answer }}</p>
-        <div style="background:#f0f0f0; padding:15px; border-radius:8px;">
-            <strong>AI Feedback:</strong><br>
-            {{ item.feedback }}
+<body class="bg-light">
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container">
+            <span class="navbar-brand fw-bold">🎯 AI Mock Interviewer</span>
+            <span class="navbar-text text-white">Interview Complete</span>
         </div>
-        <hr>
-    {% endfor %}
-    <a href="/"><button style="padding:10px 20px;">Start New Interview</button></a>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+
+                <div class="text-center mb-4">
+                    <h2>Interview Complete! 🎉</h2>
+                    <p class="text-muted">Here's your feedback for each answer — {{ role }}</p>
+                </div>
+
+                {% for item in feedbacks %}
+                <div class="card shadow mb-4">
+                    <div class="card-header bg-dark text-white">
+                        <strong>Q{{ loop.index }}:</strong> {{ item.question }}
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="mb-3">
+                            <span class="fw-bold text-muted">Your Answer:</span>
+                            <p class="mt-1">{{ item.answer }}</p>
+                        </div>
+                        <hr>
+                        <div>
+                            <span class="fw-bold">🤖 AI Feedback:</span>
+                            <p class="mt-2" style="white-space: pre-line;">{{ item.feedback | replace('**', '') }}</p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+                <div class="d-grid mb-5">
+                    <a href="/" class="btn btn-dark btn-lg">Start New Interview →</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
 </body>
 </html>

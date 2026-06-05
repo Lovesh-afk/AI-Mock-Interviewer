@@ -17,11 +17,15 @@ def generate_questions(role):
         model="models/gemini-2.5-flash",
         contents=prompt
     )
-    try:
-        questions = generate_questions(role)
-    except Exception as e:
-        return render_template("index.html", error="AI server is busy, please try again in a moment.")
-    questions = [q.strip() for q in questions if q.strip()]
+    import re
+    lines = response.text.strip().split("\n")
+    questions = []
+    for line in lines:
+        line = line.strip()
+        if line and len(line) > 5:
+            line = re.sub(r"^\d+[\.\)\-\s]+", "", line).strip()
+            if line:
+                questions.append(line)
     return questions[:5]
 
 def evaluate_answer(question, answer, role):
@@ -46,7 +50,10 @@ Be concise and constructive."""
 def index():
     if request.method == "POST":
         role = request.form.get("role")
-        questions = generate_questions(role)
+        try:
+            questions = generate_questions(role)
+        except Exception as e:
+            return render_template("index.html", error="AI server is busy, please try again in a moment.")
         session["questions"] = questions
         session["role"] = role
         session["current"] = 0
