@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Interview Results</title>
+</head>
+<body>
+    <h1>📊 Interview Complete — {{ role }}</h1>
+    <p>Here's your feedback for each question:</p>
+    <hr>
+    {% for item in feedbacks %}
+        <h3>Q{{ loop.index }}: {{ item.question }}</h3>
+        <p><strong>Your Answer:</strong> {{ item.answer }}</p>
+        <div style="background:#f0f0f0; padding:15px; border-radius:8px;">
+            <strong>AI Feedback:</strong><br>
+            {{ item.feedback }}
+        </div>
+        <hr>
+    {% endfor %}
+    <a href="/"><button style="padding:10px 20px;">Start New Interview</button></a>
+</body>
+</html>

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Interview - {{ role }}</title>
+</head>
+<body>
+    <h2>🎯 {{ role }} Interview</h2>
+    <p>Question {{ number }} of {{ total }}</p>
+    <hr>
+    <h3>{{ question }}</h3>
+    <form method="POST" action="/answer">
+        <textarea name="answer" rows="6" cols="60" placeholder="Type your answer here..."></textarea>
+        <br><br>
+        <button type="submit" style="padding:10px 20px;">Submit Answer</button>
+    </form>
+</body>
+</html>
