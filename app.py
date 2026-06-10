@@ -10,8 +10,12 @@ app.secret_key = "supersecretkey123"
 
 client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
-def generate_questions(role):
-    prompt = f"""Generate exactly 5 interview questions for a {role} role.
+def generate_questions(role, difficulty):
+    prompt = f"""Generate exactly 5 {difficulty} level interview questions for a {role} role.
+    {difficulty} means:
+    - Beginner: basic concepts, definitions, simple problems
+    - Intermediate: practical application, problem solving, moderate complexity
+    - Advanced: system design, optimization, complex scenarios
     Return only the questions, numbered 1-5, one per line. No explanations."""
     response = client.models.generate_content(
         model="models/gemini-2.5-flash",
@@ -53,19 +57,22 @@ Then continue with the rest of the feedback."""
 def index():
     if request.method == "POST":
         role = request.form.get("role")
+        difficulty = request.form.get("difficulty", "Intermediate")
         try:
-            questions = generate_questions(role)
+            questions = generate_questions(role, difficulty)
         except Exception as e:
             return render_template("index.html", error="AI server is busy, please try again in a moment.")
         session["questions"] = questions
         session["role"] = role
+        session["difficulty"] = difficulty
         session["current"] = 0
         session["feedbacks"] = []
-        return render_template("interview.html", 
-                             question=questions[0], 
-                             number=1, 
+        return render_template("interview.html",
+                             question=questions[0],
+                             number=1,
                              total=5,
-                             role=role)
+                             role=role,
+                             difficulty=difficulty)
     return render_template("index.html")
 
 @app.route("/answer", methods=["POST"])
@@ -103,9 +110,10 @@ def answer():
         return render_template("results.html", feedbacks=feedbacks, role=role, avg_score=avg_score)
 
     return render_template("interview.html",
-                         question=questions[current + 1],
-                         number=current + 2,
-                         total=5,
-                         role=role)
+                     question=questions[current + 1],
+                     number=current + 2,
+                     total=5,
+                     role=role,
+                     difficulty=session.get("difficulty"))
 if __name__ == "__main__":
     app.run(debug=True, use_reloader=False)

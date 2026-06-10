@@ -28,6 +28,19 @@
                                 <label class="form-label fw-bold">Job Role</label>
                                 <input type="text" name="role" class="form-control form-control-lg" placeholder="e.g. Python Backend Developer, Data Analyst..." required>
                             </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Difficulty Level</label>
+                                <div class="btn-group w-100" role="group">
+                                    <input type="radio" class="btn-check" name="difficulty" id="beginner" value="Beginner" checked>
+                                    <label class="btn btn-outline-dark" for="beginner">🟢 Beginner</label>
+
+                                    <input type="radio" class="btn-check" name="difficulty" id="intermediate" value="Intermediate">
+                                    <label class="btn btn-outline-dark" for="intermediate">🟡 Intermediate</label>
+
+                                    <input type="radio" class="btn-check" name="difficulty" id="advanced" value="Advanced">
+                                    <label class="btn btn-outline-dark" for="advanced">🔴 Advanced</label>
+                                </div>
+                            </div>
                             <div class="d-grid">
                                 <button type="submit" class="btn btn-dark btn-lg">Start Interview →</button>
                             </div>
