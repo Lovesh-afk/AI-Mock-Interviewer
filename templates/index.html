@@ -6,10 +6,15 @@
 </head>
 <body class="bg-light">
     <nav class="navbar navbar-dark bg-dark">
-        <div class="container">
-            <span class="navbar-brand fw-bold">🎯 AI Mock Interviewer</span>
+    <div class="container">
+        <span class="navbar-brand fw-bold">🎯 AI Mock Interviewer</span>
+        <div>
+            <a href="/history" class="btn btn-outline-light btn-sm me-2">📋 History</a>
+            <span class="navbar-text text-white me-2">{{ session.username }}</span>
+            <a href="/logout" class="btn btn-outline-light btn-sm">Logout</a>
         </div>
-    </nav>
+    </div>
+</nav>
 
     <div class="container mt-5">
         <div class="row justify-content-center">
