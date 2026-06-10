@@ -20,11 +20,28 @@
                     <h2>Interview Complete! 🎉</h2>
                     <p class="text-muted">Here's your feedback for each answer — {{ role }}</p>
                 </div>
+                <div class="card shadow mb-4 text-center">
+                    <div class="card-body p-4">
+                        <h6 class="text-muted mb-2">Overall Score</h6>
+                        <h1 class="display-3 fw-bold 
+                            {% if avg_score >= 7 %}text-success
+                            {% elif avg_score >= 5 %}text-warning
+                            {% else %}text-danger{% endif %}">
+                            {{ avg_score }}<span class="fs-4 text-muted">/10</span>
+                        </h1>
+                        <p class="text-muted">
+                            {% if avg_score >= 7 %}Great performance! You're well prepared. 🎉
+                            {% elif avg_score >= 5 %}Good effort! Keep practicing to improve. 💪
+                            {% else %}Keep practicing — you'll get there! 📚{% endif %}
+                        </p>
+                    </div>
+                </div>
 
                 {% for item in feedbacks %}
                 <div class="card shadow mb-4">
-                    <div class="card-header bg-dark text-white">
-                        <strong>Q{{ loop.index }}:</strong> {{ item.question }}
+                    <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                        <span><strong>Q{{ loop.index }}:</strong> {{ item.question }}</span>
+                        <span class="badge bg-light text-dark fs-6">{{ item.score }}/10</span>
                     </div>
                     <div class="card-body p-4">
                         <div class="mb-3">

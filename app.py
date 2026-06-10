@@ -34,12 +34,15 @@ Question: {question}
 Candidate's Answer: {answer}
 
 Evaluate this answer and provide:
-1. A score out of 10
+1. A score out of 10 (just the number, e.g. 7)
 2. What was good about the answer
 3. What could be improved
-4. A ideal sample answer in 2-3 lines
+4. An ideal sample answer in 2-3 lines
 
-Be concise and constructive."""
+Start your response with exactly this format:
+SCORE: [number]
+
+Then continue with the rest of the feedback."""
     response = client.models.generate_content(
         model="models/gemini-2.5-flash",
         contents=prompt
@@ -76,19 +79,33 @@ def answer():
     try:
         feedback = evaluate_answer(questions[current], answer_text, role)
     except Exception as e:
-        feedback = "⚠️ AI feedback unavailable right now (server busy). Try again in a moment."
-    feedbacks.append({"question": questions[current], "answer": answer_text, "feedback": feedback})
+        feedback = "SCORE: 0\n⚠️ AI feedback unavailable right now."
+
+    # Extract score from feedback
+    import re
+    score_match = re.search(r"SCORE:\s*(\d+)", feedback)
+    score = int(score_match.group(1)) if score_match else 0
+
+    # Remove the SCORE line from displayed feedback
+    clean_feedback = re.sub(r"SCORE:\s*\d+\n?", "", feedback).strip()
+
+    feedbacks.append({
+        "question": questions[current],
+        "answer": answer_text,
+        "feedback": clean_feedback,
+        "score": score
+    })
     session["feedbacks"] = feedbacks
     session["current"] = current + 1
 
     if current + 1 >= 5:
-        return render_template("results.html", feedbacks=feedbacks, role=role)
+        avg_score = round(sum(f["score"] for f in feedbacks) / len(feedbacks), 1)
+        return render_template("results.html", feedbacks=feedbacks, role=role, avg_score=avg_score)
 
     return render_template("interview.html",
                          question=questions[current + 1],
                          number=current + 2,
                          total=5,
                          role=role)
-
 if __name__ == "__main__":
     app.run(debug=True, use_reloader=False)
