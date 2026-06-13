@@ -192,7 +192,8 @@ def history():
     interviews = Interview.query.filter_by(user_id=session["user_id"]).order_by(Interview.date.desc()).all()
     return render_template("history.html", interviews=interviews)
 
+with app.app_context():
+    db.create_all()
+
 if __name__ == "__main__":
-    with app.app_context():
-        db.create_all()
     app.run(debug=True, use_reloader=False)
