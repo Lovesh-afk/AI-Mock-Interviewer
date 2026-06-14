@@ -51,7 +51,7 @@
                         <hr>
                         <div>
                             <span class="fw-bold">🤖 AI Feedback:</span>
-                            <p class="mt-2" style="white-space: pre-line;">{{ item.feedback | replace('**', '') }}</p>
+                            <p class="mt-2" style="white-space: pre-line;">{{ item.feedback | replace('**', '') | replace('*', '•') | replace('`', '') }}</p>
                         </div>
                     </div>
                 </div>
